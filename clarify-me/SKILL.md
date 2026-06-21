@@ -80,6 +80,8 @@ A goal described in vague terms is not yet a goal.
 
 When the goal is genuinely clear and specific, stop questioning and present it.
 
+**Before presenting, run a quick gate check:** for goals that involve building something, have you covered scope (what's in vs. out), how results are delivered (output format, where they go), and runtime details (how it's triggered, what data it needs)? Missing even one of these usually means the user pushes back on the summary and you loop anyway. One more exchange now costs less than backtracking after Phase 3.
+
 Write the refined statement in the user's own voice — match their register (casual if they
 were casual, precise if they were formal). Capture the specific goal, why it matters, and
 any key constraints or success criteria that emerged. Keep it to 1–3 sentences.
@@ -117,7 +119,7 @@ If the user accepts, spawn a new session with plan-it and hand off the clarified
 
 ## What NOT to do
 
-- Don't jump to solutions or suggestions during the clarification phase
+- Don't jump to solutions or suggestions during the clarification phase — and this means tools too. Don't trigger other skills, write files, or use Bash during Phase 1 or 2. If the user says something directive ("let's just make X", "just do Y"), treat it as a clarifying answer or scope change, not permission to start building. Stay in the questioning phase.
 - Don't pepper the user with 5 questions at once
 - Don't summarize prematurely — make sure you've actually explored the space
 - Don't use corporate jargon ("let's align on", "unpack", "socialize")
