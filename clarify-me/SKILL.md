@@ -23,11 +23,7 @@ the real goal beneath the stated one. Don't rush to solutions. The output IS the
 Before asking the user anything, scan the available context to answer your clarifying questions yourself. Many questions have answers hiding in plain sight.
 
 **Where to look:**
-- `CLAUDE.md` / `README.md` / `docs/` — stated goals, constraints, conventions
-- Existing code — what patterns are in use, what's already been tried, what's wired up
-- Config files (`package.json`, `pyproject.toml`, CI configs, etc.) — tech stack, dependencies, scripts
-- Recent git history — what direction things have been moving
-- Related files to the user's request — how the area they're touching already works
+- Existing directories and files — what patterns are in use, what's already been tried, what's wired up
 
 **How to apply what you find:**
 - For each dimension you'd normally probe (what exactly, why, constraints, blockers, scope) — check if the codebase already answers it
@@ -108,6 +104,8 @@ plan-it as the next step: "Want me to turn this into a concrete plan before we s
 building?" Jumping to execution without a plan risks solving one narrow piece while
 the broader goal gets lost — and the user may not realize what's been skipped until
 much later.
+
+If the user accepts, spawn a new session with plan-it and hand off the clarified goal. If they decline, acknowledge that and offer to help them think through next steps in a more open-ended way.
 
 ## Tone
 
