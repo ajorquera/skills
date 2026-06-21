@@ -1,12 +1,12 @@
 ---
-name: prd-it
+name: to-prd
 description: >
   Use this skill to turn a plan into a Product Requirements Document (PRD) and, when asked, file
   it as GitHub issues. Trigger whenever the user wants to formalize a plan or set of decisions into
   a spec — phrases like "write a PRD", "turn this plan into requirements", "make a product requirements
   doc", "spec this out", "create requirements from this plan", or "file these as GitHub issues / create
   issues for this". This skill pairs naturally with plan-it: once plan-it has produced a plan, run
-  prd-it to convert it into a structured PRD and break it into trackable issues. Reach for it
+  to-prd to convert it into a structured PRD and break it into trackable issues. Reach for it
   proactively after a plan exists or the user starts talking about requirements, tickets, epics, or
   issues — even if they don't say the exact words "PRD". The deliverable is a markdown PRD file, plus
   optional GitHub issues (an epic with linked sub-issues).

@@ -47,7 +47,7 @@ characters that break shell quoting.
 gh issue create --repo owner/name \
   --title "[Epic] Welcome email — PRD" \
   --label "epic" --label "prd:welcome-email" \
-  --body-file /tmp/prd-it/epic-body.md
+  --body-file /tmp/to-prd/epic-body.md
 ```
 
 `gh issue create` prints the new issue's URL; the trailing number is the epic number (call it
@@ -65,7 +65,7 @@ anyone reading the raw issue.
 gh issue create --repo owner/name \
   --title "R1 — Send welcome email on signup" \
   --label "prd:welcome-email" \
-  --body-file /tmp/prd-it/r1-body.md
+  --body-file /tmp/to-prd/r1-body.md
 ```
 
 Suggested sub-issue body:
@@ -119,7 +119,7 @@ body. GitHub renders `- [ ] #123` as a checkable item showing the child's title 
 ```
 
 ```bash
-gh issue edit $EPIC --repo owner/name --body-file /tmp/prd-it/epic-body.md
+gh issue edit $EPIC --repo owner/name --body-file /tmp/to-prd/epic-body.md
 ```
 
 This works everywhere but produces only a flat checklist, not the nested hierarchy or progress bar —
