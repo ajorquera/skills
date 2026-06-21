@@ -1,0 +1,79 @@
+{
+  "skill_name": "clarify-me",
+  "evals": [
+    {
+      "id": 0,
+      "name": "vague-goal-needs-drilling",
+      "prompt": "I want to improve my productivity.",
+      "expected_output": "The skill opens the space with a warm, inviting question rather than immediately listing productivity tips. It explores what productivity means to this person specifically — what area of life or work, what outcomes they're after, what's blocking them now — through a focused series of questions (one or two at a time). It eventually delivers a refined statement like: 'You want to reclaim focused time during your workday so you can finish your most important project without working late — the main blocker is back-to-back meetings and constant Slack interruptions.' It does NOT recommend tools, apps, or techniques during the questioning phase.",
+      "assertions": [
+        "Responds with a question that invites the user to say more rather than jumping to tips or solutions",
+        "Explores at least two of: what success looks like, underlying motivation, current blockers, scope, or constraints",
+        "Does not recommend productivity tools or techniques during the clarification phase",
+        "Delivers a refined goal statement that is specific and outcome-focused, not just a rephrasing of 'be more productive'",
+        "Refined statement uses the user's own register (casual, first-person)"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "goal-with-explicit-sub-questions",
+      "prompt": "I want to start a newsletter. Should I use Substack or Ghost? Do I need to learn email marketing?",
+      "expected_output": "The skill acknowledges the sub-questions but doesn't immediately answer them. It first explores the underlying goal — who the newsletter is for, what success looks like, what content angle, why now — so the answers to the tool/skill questions become grounded. After sufficient exploration, the refined statement names the specific newsletter goal AND addresses the sub-questions (e.g. 'For your use case a free Substack is enough to start — you don't need to learn email marketing yet'). The sub-questions are not left dangling.",
+      "assertions": [
+        "Does not immediately answer 'Substack vs Ghost' or 'do I need email marketing' without first exploring the underlying goal",
+        "Asks at least one question to understand who the newsletter is for or what success looks like",
+        "The refined statement addresses both explicit sub-questions — either answering them briefly or explaining why a deeper need supersedes them",
+        "Does not leave the sub-questions unacknowledged at the end"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "user-pushes-back-on-questions",
+      "prompt": "I want to learn to code. Just tell me what to do.",
+      "expected_output": "When the user signals impatience and asks to skip clarification, the skill briefly names what it's doing and why ('I want to make sure I point you in the right direction — one thing worth knowing first'), then asks the single most important remaining question (e.g. what kind of coding, or what goal they have in mind). If the user pushes back a second time, it honours that and moves to a useful response. It does NOT collapse immediately on the first pushback, nor does it pepper them with questions to compensate.",
+      "assertions": [
+        "Does not immediately abandon the clarification process on first pushback — names what it is doing and why",
+        "Asks at most one focused question after the pushback, not a list",
+        "If the user pushes back a second time, honours it and provides a useful direct response",
+        "Does not use corporate jargon like 'let's align on' or 'unpack'"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "simple-clear-goal-hands-off-quickly",
+      "prompt": "I want to write a thank-you email to my manager after she gave me critical feedback that really helped me grow.",
+      "expected_output": "The goal is already fairly clear and specific. The skill may ask one brief clarifying question at most (e.g. tone, length) but does not over-probe. It quickly delivers a refined statement and offers to draft the email directly. It does NOT suggest plan-it for this simple, self-contained task.",
+      "assertions": [
+        "Does not ask more than two clarifying questions for a goal that is already well-scoped",
+        "Delivers a refined statement that is concise and captures the key nuance (genuine growth acknowledgement, not just politeness)",
+        "Offers to start on the task directly (draft the email), not to make a plan",
+        "Does not suggest plan-it for a simple single-deliverable task"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "multi-part-goal-routes-to-plan-it",
+      "prompt": "I want to launch a side business selling handmade ceramics online.",
+      "expected_output": "The skill explores the goal deeply — what kind of ceramics, target audience, scale ambitions, timeline, existing setup, blockers. After surfacing a specific and well-formed goal, it recognizes this is multi-part (product, storefront, marketing, fulfilment) and rather than jumping into execution, suggests plan-it as the natural next step: 'Want me to turn this into a concrete plan before we start building?'",
+      "assertions": [
+        "Explores at least three dimensions of the goal (e.g. target audience, scale, timeline, blockers, what already exists)",
+        "Delivers a refined goal statement that names the specific business vision and key constraints",
+        "Identifies that the goal is multi-part or spans multiple areas",
+        "Suggests plan-it as the next step rather than jumping straight into execution",
+        "Does not jump into tactical advice (platform recommendations, pricing) during the clarification phase"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "activity-framed-goal-shifted-to-outcome",
+      "prompt": "I want to run more team meetings.",
+      "expected_output": "The skill recognises this is activity-framed ('run more meetings') and probes for the underlying outcome the user actually wants. Through questioning it surfaces something like 'decisions get made faster' or 'the team feels more aligned and unblocked'. The refined statement is outcome-focused, not just 'run more meetings but better.'",
+      "assertions": [
+        "Asks a question that probes beneath the activity to the underlying outcome or motivation",
+        "Does not accept 'run more meetings' as a well-formed goal without exploring what the user is ultimately trying to achieve",
+        "Refined statement is outcome-focused (e.g. decisions, alignment, unblocking) rather than activity-focused",
+        "Does not suggest meeting frameworks or tools during the clarification phase"
+      ]
+    }
+  ]
+}
