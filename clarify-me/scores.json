@@ -1,0 +1,15 @@
+[
+  {
+    "version": "1ee7d0117b34",
+    "score": 10.0,
+    "timestamp": "2026-06-21T21:09:00Z",
+    "objectives": [
+      { "description": "Research context before asking", "passed": true, "note": "Read 3 skill files before the first question." },
+      { "description": "Surface unexplored assumptions", "passed": true, "note": "Found 2 real gaps: storage location and objective detection." },
+      { "description": "Deliver a refined goal statement the user accepts", "passed": true, "note": "User accepted without revision." },
+      { "description": "Add value beyond clarification (proactive suggestions)", "passed": true, "note": "Proposed failure summaries; user said 'I like your suggestion.'" },
+      { "description": "Hand off cleanly to next step", "passed": true, "note": "Confirmed before implementing, caught edit confusion, finished cleanly." }
+    ],
+    "failure_summary": ""
+  }
+]

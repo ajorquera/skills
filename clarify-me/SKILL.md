@@ -18,6 +18,27 @@ the real goal beneath the stated one. Don't rush to solutions. The output IS the
 
 ## The Process
 
+### Phase 0 — Research the codebase first
+
+Before asking the user anything, scan the available context to answer your clarifying questions yourself. Many questions have answers hiding in plain sight.
+
+**Where to look:**
+- `CLAUDE.md` / `README.md` / `docs/` — stated goals, constraints, conventions
+- Existing code — what patterns are in use, what's already been tried, what's wired up
+- Config files (`package.json`, `pyproject.toml`, CI configs, etc.) — tech stack, dependencies, scripts
+- Recent git history — what direction things have been moving
+- Related files to the user's request — how the area they're touching already works
+
+**How to apply what you find:**
+- For each dimension you'd normally probe (what exactly, why, constraints, blockers, scope) — check if the codebase already answers it
+- If it does, treat that as a known fact and skip asking
+- If the codebase gives a partial answer, incorporate it and ask only the remaining gap
+- If something in the codebase seems to contradict the user's request, surface that directly instead of asking an open question
+
+**Only proceed to Phase 1 if genuine ambiguity remains after research.** If the codebase answers everything, skip straight to Phase 3 — deliver the refined statement based on what you found, noting what you learned from the code.
+
+Don't mention this research phase to the user unless it uncovered something interesting or surprising. Just act on what you found.
+
 ### Phase 1 — Open the space
 
 Start by acknowledging what they said, then ask an opening question that invites them

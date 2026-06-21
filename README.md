@@ -8,8 +8,8 @@ A collection of Claude Code skills — self-contained instruction sets that exte
 |---|---|
 | **clarify-me** | Surfaces the real goal behind what a user asks through deep, thoughtful questioning, then delivers a precise, well-formed statement of what they actually want |
 | **plan-it** | Compacts a conversation into a concrete, actionable plan. Pairs naturally with `clarify-me`: once a goal is clear, `plan-it` maps it to ordered steps |
-| **prd-it** | Turns a plan into a Product Requirements Document and, when asked, files requirements as GitHub issues (an epic with linked sub-issues) |
-| **evaluate-it** | Reviews a conversation to identify which skills ran, diagnoses where they fell short, drafts before/after edits, verifies them with test runs, and produces an improvement report |
+| **to-prd** | Turns a plan into a Product Requirements Document and, when asked, files requirements as GitHub issues (an epic with linked sub-issues) |
+| **evaluate-skill** | Reviews a conversation to identify which skills ran, diagnoses where they fell short, drafts before/after edits, verifies them with test runs, and produces an improvement report |
 
 ## How skills work
 
@@ -35,12 +35,12 @@ skill-name/
 These skills are designed to chain:
 
 ```
-clarify-me → plan-it → prd-it
+clarify-me → plan-it → to-prd
                           ↓
                     GitHub issues
 ```
 
-And `evaluate-it` can be run after any skill to improve it based on the conversation.
+And `evaluate-skill` can be run after any skill to improve it based on the conversation.
 
 ## Packaging a skill
 

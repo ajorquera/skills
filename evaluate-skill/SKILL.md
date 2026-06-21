@@ -1,5 +1,5 @@
 ---
-name: evaluate-it
+name: evaluate-skill
 description: >-
   Review the current conversation, identify which skills were actually used in
   it, diagnose where they fell short, and propose concrete, test-backed
@@ -129,7 +129,101 @@ Only stand behind edits that demonstrably do better. If a change doesn't help �
 makes things worse — say so in the report and revise or drop it. A verification that
 *disconfirms* your idea is a success: it stopped you shipping a regression.
 
-### 8. Apply and package (after approval)
+### 8. Score the skill
+
+After the report is written and before asking for approval, compute and record a
+performance score for each evaluated skill. This creates a persistent, versioned
+record of how the skill is improving over time.
+
+#### Determine the skill's objectives
+
+Look for an `## Objectives` section in the skill's `SKILL.md`. If one exists, use
+those as the objectives for this run. If none exists, infer objectives from the
+skill's stated purpose and workflow steps — e.g. for clarify-me, a natural objective
+is "produce a refined goal statement the user accepted without pushing back."
+
+There may be one objective or many; both are fine. What matters is that each
+objective is concrete enough to check against the conversation.
+
+#### Score each objective
+
+For each objective, read the conversation and ask: did the skill achieve this?
+
+- **Pass** — the user accepted the output, moved forward without complaint, or
+  explicitly confirmed it was right. Silence counts as a pass: if the user didn't
+  push back, assume it worked.
+- **Fail** — the user expressed frustration, complained, had to correct the skill,
+  repeated themselves, or explicitly said something didn't work.
+
+Keep your reasoning brief for each objective: one sentence on what happened.
+
+#### Compute the run score
+
+```
+run_score = round((objectives_passed / total_objectives) * 10, 1)
+```
+
+Clamp to the range 1–10 (a skill that fails every objective still scores 1, not 0).
+
+#### Compute the cumulative score
+
+The overall skill score is a running average across all evaluations, giving equal
+weight to every run. Read the current `scores.json` to get `total_evaluations` and
+the previous `score`, then:
+
+```
+n = total_evaluations + 1
+score = round((prev_score * (n - 1) + run_score) / n, 1)
+```
+
+If no `scores.json` exists yet, treat `prev_score = 0` and `n = 1`, so the first
+run's score becomes the baseline.
+
+#### Compute the version hash
+
+Hash the contents of the skill's source directory to produce a version identifier.
+A stable, simple approach:
+
+```bash
+find <skill-dir> -type f | sort | xargs sha256sum | sha256sum | cut -c1-12
+```
+
+This produces a 12-character hex string that changes whenever any file in the
+directory changes.
+
+#### Write to scores.json
+
+Update (or create) `scores.json` in the **original** skill's source directory
+(not the `/tmp` copy). The file has a top-level summary and a `history` array
+with one entry per evaluation run:
+
+```json
+{
+  "score": 7.2,
+  "total_evaluations": 3,
+  "version": "a3f9c1d82b44",
+  "history": [
+    {
+      "version": "a3f9c1d82b44",
+      "run_score": 8.0,
+      "timestamp": "2026-06-21T14:32:00Z",
+      "failed_objectives": [
+        { "description": "Surface hidden assumptions", "note": "User had to explicitly point out the deployment constraint the skill missed." }
+      ],
+      "failure_summary": "Missed the deployment constraint assumption; user had to surface it manually."
+    }
+  ]
+}
+```
+
+`failed_objectives` contains only the objectives that failed — omit passing ones.
+`failure_summary` is an empty string `""` when nothing failed.
+`version` at the top level reflects the version hash at the time of the most recent run.
+
+Include the cumulative score and `total_evaluations` in the report summary line so
+the user can see the skill's track record alongside the proposed edits.
+
+### 9. Apply and package (after approval)
 
 The report is for approval — don't repackage until the user signs off (they may
 want to tweak the edits first). Once approved:
