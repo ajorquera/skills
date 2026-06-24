@@ -1,18 +1,18 @@
 ---
 name: evaluate-skill
 description: >-
-  Review the current conversation, identify which skills were actually used in
-  it, diagnose where they fell short, and propose concrete, test-backed
-  improvements to those skills. Use this skill whenever the user wants to
-  evaluate how a skill performed in a conversation, tune or fix a skill based on
-  how it just behaved, run a "post-mortem" on a skill, or says things like "that
-  skill didn't work well, improve it", "make this skill better based on what just
-  happened", "why did the skill do X", "the deck skill keeps ignoring my
-  formatting", or "refine the skills we used here". Trigger even when the user
-  doesn't name a specific skill, as long as they're pointing at a recent
-  conversation and want the skills involved to work better next time. Do NOT use
-  this to create a brand-new skill from scratch (use skill-creator) or for
-  general skill questions unrelated to improving one based on a conversation.
+  Review the current conversation, identify the ONE skill that was used (or
+  that the user is pointing at), diagnose where it fell short, and propose
+  concrete, test-backed improvements to that skill. Use this skill whenever the
+  user wants to evaluate how a skill performed in a conversation, tune or fix a
+  skill based on how it just behaved, run a "post-mortem" on a skill, or says
+  things like "that skill didn't work well, improve it", "make this skill better
+  based on what just happened", "why did the skill do X", "the deck skill keeps
+  ignoring my formatting", or "refine the skills we used here". Trigger even
+  when the user doesn't name a specific skill, as long as they're pointing at a
+  recent conversation and want the skill involved to work better next time. Do
+  NOT use this to create a brand-new skill from scratch (use skill-creator) or
+  for general skill questions unrelated to improving one based on a conversation.
 ---
 
 # Evaluate It
@@ -25,8 +25,9 @@ diagnose what the *skill* (not the model, not the user) could have done better, 
 hand back concrete edits that are verified to actually help.
 
 You produce a written report with before/after edits for the user to approve, and
-— once approved — a repackaged `.skill` file they can install. You verify the edits
-with before/after tests so you're not shipping changes on a hunch.
+— once approved — a pull request with the changes applied directly to the skill's
+source. You verify the edits with before/after tests so you're not shipping changes
+on a hunch.
 
 ## Why this is worth doing carefully
 
@@ -36,6 +37,10 @@ overfitting, where you bolt on a special case that fixes today's complaint and
 quietly makes the skill worse everywhere else. The goal is to read this one
 conversation as evidence of a *general* weakness, then fix the general weakness.
 Hold that tension the whole way through.
+
+## Interaction style
+
+Ask questions **one at a time**. Never batch multiple clarifying questions into a single message — ask one, wait for the answer, then ask the next if needed. This applies at every step: identifying the skill, gathering context, confirming before applying edits.
 
 ## The workflow
 
@@ -51,18 +56,20 @@ ask.)
 
 If the user has pointed at a *different* past session, read that one instead.
 
-### 2. Identify which skills were used — and how
+### 2. Identify which ONE skill to evaluate
 
-Don't guess. A skill shows up in a transcript in concrete ways:
+This skill evaluates exactly one skill per run. Determine which skill that is:
 
-- A `<command-name>` or `<command-message>` tag, or a line like `The "<name>" skill is loading`.
-- A `Skill` tool call naming the skill.
-- A stretch of behavior that visibly follows a skill's instructions (e.g. the model reads a `SKILL.md`, then builds a `.docx` a particular way).
+1. **If the user named a skill explicitly** — use that one.
+2. **If the user hasn't named one**, scan the conversation for skills that ran. A skill shows up in a transcript in concrete ways:
+   - A `<command-name>` or `<command-message>` tag, or a line like `The "<name>" skill is loading`.
+   - A `Skill` tool call naming the skill.
+   - A stretch of behavior that visibly follows a skill's instructions.
+3. **If exactly one skill ran**, proceed with it.
+4. **If multiple skills ran** and it's unclear which one the user wants evaluated, ask: "Which skill should I evaluate — [list them]?" Don't guess; the user's intent matters here.
+5. **If no skill ran at all**, say so plainly and offer to diagnose why no skill triggered (a description/triggering problem, which is itself fixable). Don't invent a skill to refine.
 
-List every skill that ran. For each, note **what it was asked to do** and **what
-it produced**. If no skill ran at all, say so plainly — and offer to either
-diagnose why no skill triggered (a description/triggering problem, which is itself
-fixable) or suggest a skill that would have helped. Don't invent a skill to refine.
+Once identified, note **what it was asked to do** and **what it produced**. All subsequent steps apply only to this one skill.
 
 ### 3. Diagnose — separate skill faults from everything else
 
@@ -80,19 +87,12 @@ environmental — those are out of scope. Only keep issues a skill edit can plau
 fix. Cite the specific moment in the conversation as evidence for each one; a
 diagnosis without evidence is a guess.
 
-### 4. Locate the skill files (and copy them somewhere writeable)
+### 4. Locate the skill files
 
-Installed skills usually live in a **read-only** cache, and editing that cache does
-not change the user's saved skill. So for each skill you're improving, find its
-directory (the `SKILL.md` path is in the transcript or the available-skills list),
-then copy the whole directory to a writeable spot before touching anything:
-
-```
-cp -r "<read-only-skill-path>" /tmp/<skill-name>/
-```
-
-Edit the copy. Keep the original name and directory name unchanged — you're
-producing a better version of the *same* skill, not a fork.
+The skills repo root is available as the environment variable `$SKILLS_REPO`.
+The skill's source directory is `$SKILLS_REPO/<skill-name>/`.
+Copy it to `/tmp/<skill-name>/` for use during drafting and verification;
+the approved edits will be applied to the original source in step 9.
 
 ### 5. Draft the improvements
 
@@ -110,7 +110,7 @@ changing and why.
 ### 6. Write the report
 
 This is the primary deliverable. Use the structure in
-`references/report-template.md`. In short: a summary, then one section per skill
+`references/report-template.md`. In short: a summary, then a section for the skill
 listing each diagnosed issue (with its evidence from the conversation), the
 proposed before/after edit, and the expected effect. Save it as a markdown file and
 present it to the user. Keep claims tied to evidence — the report should let the
@@ -193,8 +193,7 @@ directory changes.
 
 #### Write to scores.json
 
-Update (or create) `scores.json` in the **original** skill's source directory
-(not the `/tmp` copy). The file has a top-level summary and a `history` array
+Update (or create) `scores.json` in `$SKILLS_REPO/<skill-name>/` (not the `/tmp` copy). The file has a top-level summary and a `history` array
 with one entry per evaluation run:
 
 ```json
@@ -223,16 +222,19 @@ with one entry per evaluation run:
 Include the cumulative score and `total_evaluations` in the report summary line so
 the user can see the skill's track record alongside the proposed edits.
 
-### 9. Apply and package (after approval)
+### 9. Apply and open a pull request (after approval)
 
-The report is for approval — don't repackage until the user signs off (they may
-want to tweak the edits first). Once approved:
+The report is for approval — don't touch the skill files until the user signs off
+(they may want to tweak the edits first). Once approved:
 
-1. Apply the approved edits to the writeable copy from step 4.
-2. Repackage: `python -m scripts.package_skill /tmp/<skill-name>` (run from the skill-creator directory, which holds the packaging script). This writes a `<skill-name>.skill` file.
-3. Present the `.skill` file to the user and tell them they can install it from there. Note that you can't modify their saved skill from inside this session — installing the `.skill` is how the improvement takes effect.
-
-If you improved several skills, produce one `.skill` per skill.
+1. Create a new branch from `master` named `improve-<skill-name>` (e.g. `improve-clarify-me`).
+2. Apply the approved edits **directly to `$SKILLS_REPO/<skill-name>/`** (not the `/tmp` copy).
+3. Commit the changes with a short message describing what was improved.
+4. Push the branch and open a pull request against `master`. The PR title should be `improve <skill-name>: <one-line summary of the main fix>`. The PR body should include:
+   - The diagnosed issue(s) from the report.
+   - The before/after edits.
+   - A note on what the verification showed.
+5. Return the PR URL to the user so they can review and merge.
 
 ## A note on scope and honesty
 
