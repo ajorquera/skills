@@ -10,6 +10,7 @@ A collection of Claude Code skills — self-contained instruction sets that exte
 | **plan-it** | Compacts a conversation into a concrete, actionable plan. Pairs naturally with `clarify-me`: once a goal is clear, `plan-it` maps it to ordered steps |
 | **to-prd** | Turns a plan into a Product Requirements Document and, when asked, files requirements as GitHub issues (an epic with linked sub-issues) |
 | **evaluate-skill** | Reviews a conversation to identify which skills ran, diagnoses where they fell short, drafts before/after edits, verifies them with test runs, and produces an improvement report |
+| **ship** *(manual: `/ship`)* | Orchestrates a GitHub issue from exploration to a review-approved PR — `ship-explore → ship-design → ship-implement → (ship-review ⇄ ship-implement)`. Sub-skills (`ship-setup`, `ship-explore`, `ship-design`, `ship-implement`, `ship-review`, `ship-discuss`) are its pipeline stages, invoked by `ship` itself, not standalone |
 
 ## How skills work
 
@@ -41,6 +42,12 @@ clarify-me → plan-it → to-prd
 ```
 
 And `evaluate-skill` can be run after any skill to improve it based on the conversation.
+
+`ship` is a separate, manually-triggered chain (run `.claude/ship/` setup first via `ship-setup`):
+
+```
+ship-explore → ship-design → ship-implement ⇄ ship-review → ready-for-review PR
+```
 
 ## Packaging a skill
 
