@@ -2,8 +2,7 @@
 name: audit-skill
 description: >-
   Audit a skill's SKILL.md and disclosed files against the
-  writing-great-skills framework. Use when the user wants a skill audited for
-  quality or structure.
+  writing-great-skills framework. Use when the user wants a skill audited.
 ---
 
 # Audit a Skill
@@ -19,7 +18,7 @@ Resolve which skill is under audit (ask if the name is ambiguous or no path was
 given). Read its `SKILL.md` fully, then walk every context pointer inside it
 — every linked file in `references/`, every sibling `.md` it points to — and read
 each one fully. Then locate `writing-great-skills`
-(same skills root, installed alongside this skill) and read its `GLOSSARY.md`
+(installed alongside this skill) and read its `GLOSSARY.md`
 fully — it is the checklist every finding below cites against. Completion
 criterion: every file either skill can reach from context has been read.
 
@@ -44,9 +43,9 @@ judgment call — an explicit note instead of a forced fix.
 ### 4. Report
 
 One summary line — skill name, path, headline verdict — then a section per axis
-with its findings (or "no findings"), each in the quote → failure mode → why it
-matters → fix shape from above. Completion criterion: every axis has a section,
-even if "no findings," and every finding matches that shape. Findings and fixes
+with its findings, each in the quote → failure mode → why it
+matters → fix shape from above. Completion criterion: every axis with findings has a section,
+and every finding matches that shape. Findings and fixes
 are proposals for the user to approve.
 
 ### 5. Publish the report as an artifact
