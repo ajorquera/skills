@@ -8,7 +8,7 @@ description: >-
 
 # Audit a Skill
 
-An audit is a checklist run against the files as written, not against a transcript.
+An audit is a checklist run against the files as written.
 It turns the writing-great-skills framework into findings: quoted lines, named
 failure modes, why they matter, concrete fixes. 
 
@@ -34,21 +34,22 @@ If an axis has nothing to report, say so explicitly — that shows it was checke
 not skipped. Completion criterion: every term listed in the glossary has been
 checked against the skill, not just the ones that turned up something.
 
-### 3. Apply the fix for each finding
+### 3. Draft the fix for each finding
 
 Smallest edit that resolves the named failure mode, expressed as before → after.
-Preserve the skill's own intent and voice — an audit fixes what's broken, it
-doesn't rewrite the skill into a different one. 
+Preserve the skill's own intent and voice — an audit fixes what's broken while
+keeping it the same skill. Completion criterion: every finding carries a
+drafted before/after fix, or an explicit note that it's a judgment call.
 
-If there a finding that is ambiguous or requires a judgment call, note it in the report.
+If a finding is ambiguous or requires a judgment call, note that instead of forcing a fix.
 
 ### 4. Report
 
 One summary line — skill name, path, headline verdict — then a section per axis
-with its findings (or "no findings"), each as: quote → failure mode → why it
-matters → before/after fix. Completion criterion: every axis has a section, even
-if "no findings," and every finding carries a quote, failure mode, why it matters, and
-fix. This is for approval, not a fait accompli.
+with its findings (or "no findings"), each in the quote → failure mode → why it
+matters → fix shape from above. Completion criterion: every axis has a section,
+even if "no findings," and every finding matches that shape. Findings and fixes
+are proposals for the user to approve.
 
 ### 5. Publish the report as an artifact
 
