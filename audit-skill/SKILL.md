@@ -25,8 +25,9 @@ criterion: every file either skill can reach from context has been read.
 ### 2. Check all four axes
 
 Go through the skill against each axis in the glossary, term by term. For each
-hit: quote the offending line(s), name the specific failure mode, note why it
-matters.
+hit: quote the offending line(s) — or, when the defect is an absence (no
+completion criterion, no description, no exit condition), point to where it
+should be — name the specific failure mode, note why it matters.
 
 If an axis has nothing to report, say so explicitly — that shows it was checked,
 not skipped. Completion criterion: every term listed in the glossary has been
