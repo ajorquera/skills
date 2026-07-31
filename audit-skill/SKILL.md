@@ -8,9 +8,8 @@ description: >-
 
 # Audit a Skill
 
-An audit is a checklist run against the files as written.
-It turns the writing-great-skills framework into findings: quoted lines, named
-failure modes, why they matter, concrete fixes. 
+An audit is a checklist run against the files as written, turning the
+writing-great-skills framework into findings the user can act on.
 
 ## Process
 
@@ -39,9 +38,8 @@ checked against the skill, not just the ones that turned up something.
 Smallest edit that resolves the named failure mode, expressed as before → after.
 Preserve the skill's own intent and voice — an audit fixes what's broken while
 keeping it the same skill. Completion criterion: every finding carries a
-drafted before/after fix, or an explicit note that it's a judgment call.
-
-If a finding is ambiguous or requires a judgment call, note that instead of forcing a fix.
+drafted before/after fix, or — when the finding is ambiguous or requires a
+judgment call — an explicit note instead of a forced fix.
 
 ### 4. Report
 
