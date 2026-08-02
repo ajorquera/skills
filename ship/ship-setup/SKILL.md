@@ -1,6 +1,6 @@
 ---
 name: ship-setup
-description: One-time repo bootstrap for the ship workflow — verify GitHub + gh auth, generate coding standards (global template amended with repo-inferred conventions), review instructions, and config under .claude/ship/. Run once per repo before /ship.
+description: One-time repo bootstrap for the ship workflow
 disable-model-invocation: true
 ---
 
@@ -18,7 +18,13 @@ All three must pass; stop with a clear message on the first failure:
 
 ## 2. Idempotency check
 
-If `.claude/ship/` exists at the repo root, report "already set up" with a one-line summary of what's there and **exit**. Only regenerate if the user passed `--force` (back up the old folder to `.claude/ship.bak/` first).
+It needs all necessary files to run the ship workflow. If any are missing, the skill will generate them. The necessary files are:
+
+- `.claude/ship/coding-standards.md`
+- `.claude/ship/review-instructions.md`
+- `.claude/ship/explore-instructions.md`
+- `.claude/ship/design-instructions.md`
+- `.claude/ship/config.md`
 
 ## 3. Generate artifacts
 
@@ -38,6 +44,8 @@ Show the user a short summary of the amendments you inferred before writing — 
 
 **`.claude/ship/explore-instructions.md`** — copy `templates/explore-instructions.md` verbatim; it governs ship-explore's research contents, depth, and blocking criteria. Add repo-specific cautions to its marked section only if the exploration above surfaced any (e.g. a module that always needs a domain expert).
 
+**`.claude/ship/design-instructions.md`** — copy `templates/design-instructions.md` verbatim; it governs ship-design's self-critique/prototype-validation methodology and depth. Add repo-specific cautions to its marked section only if the exploration above surfaced any (e.g. a module where prototyping is mandatory even for small changes).
+
 **`.claude/ship/config.md`** — copy `templates/config.md` (default `max_review_iterations: 3`).
 
 ## 4. Create labels
@@ -45,9 +53,3 @@ Show the user a short summary of the amendments you inferred before writing — 
 Ensure these labels exist (`gh label create ... || true`):
 
 - `ship:needs-info` — issue not implementable as written; a human must clarify
-
-## 5. Commit
-
-Commit `.claude/ship/` directly to the default branch and push. Commit message: `chore: bootstrap ship workflow config`. This is a one-time bootstrap — no PR (the review instructions don't exist until this commit lands).
-
-Finish by telling the user the workflow entry points: `/ship [#issue]`, or the phases individually (`/ship-explore`, `/ship-design`, `/ship-implement`, `/ship-review`). `/ship-discuss` is separate from the pipeline — use it anytime to grill through one specific subject on an issue or PR.

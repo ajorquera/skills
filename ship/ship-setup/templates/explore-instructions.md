@@ -1,30 +1,26 @@
 # Explore instructions
 
-<!-- ship-setup: stack-independent template. Tweak per repo to change ship-explore's behaviour. -->
+<!-- ship-setup: stack-independent template. Repo-specific cautions go in the marked section below. -->
 
-## Research contents
+## Tools 
 
-Every research comment must establish:
+## Research approach
 
-- Title and Type (Bug or Feature), taken from or inferred from the issue
-- Summary, one paragraph, clear and concise
-- Reproduction steps (bugs) or current-vs-desired behavior (features) — precise enough that another agent can reproduce or locate it without guessing
-- Relevant code: files, modules, entry points touched, and what they currently do
-- Risks: what could break, migration/compat concerns, security surface touched
+Investigate the question against **primary sources** — official docs, source code, specs, first-party APIs — not a secondary write-up of them. Follow every claim back to the source that owns it.
 
-## Depth
+## Depth by type
 
-Proportional to risk exposure: a one-file, low-risk issue gets a short writeup; anything touching shared modules, public APIs, or data gets the full treatment. Read the actual code and history — never write from file names or the issue title alone.
+- **Bug** — reproduce it in the code, don't take the report's word for it. Trace from the reported symptom to the responsible line(s) and state the root cause, not just where it surfaces. Can't pin down a reproducible root cause after a reasonable look? That's a blocking condition, not a guess.
+- **Feature** — find how comparable functionality already exists (patterns, modules, tests, entry points) so an implementer has a landing spot. Don't scope or design the solution — that's the next phase.
+
+Both: note migration/compat concerns and any security surface touched — feeds the Risks section directly.
 
 ## Blocking criteria
 
-Investigate first; block (comment + `ship:needs-info` + stop) only when investigation still leaves a costly ambiguity:
+On top of the Bug/Feature check `ship-explore` already performs, report `BLOCKED` when:
 
-- Bug vs. Feature can't be determined even after reading the code and history
-- Contradictory or missing requirements that materially change what "fixed" means
-- Data migrations, breaking public API changes, or auth/security-sensitive areas the issue doesn't settle
+- the issue lacks enough information to reproduce (bug) or to state desired behavior (feature), and investigation doesn't close the gap
+- reproduction shows current behavior already matches what's requested, or the request is self-contradictory
+- the change lands in an area flagged below as needing a human
 
-Otherwise, state what was found and proceed — asking a human is the last resort, not the first.
-
-<!-- Repo-specific additions below: areas needing extra caution, modules that
-     always need a domain expert, docs the explorer must read first, etc. -->
+Otherwise, state what was found and proceed — a human is the last resort, not the first.
