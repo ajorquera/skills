@@ -6,10 +6,8 @@ A collection of Claude Code skills — self-contained instruction sets that exte
 
 | Skill | What it does |
 |---|---|
-| **clarify-me** | Surfaces the real goal behind what a user asks through deep, thoughtful questioning, then delivers a precise, well-formed statement of what they actually want |
-| **plan-it** | Compacts a conversation into a concrete, actionable plan. Pairs naturally with `clarify-me`: once a goal is clear, `plan-it` maps it to ordered steps |
-| **to-prd** | Turns a plan into a Product Requirements Document and, when asked, files requirements as GitHub issues (an epic with linked sub-issues) |
-| **evaluate-skill** | Reviews a conversation to identify which skills ran, diagnoses where they fell short, drafts before/after edits, verifies them with test runs, and produces an improvement report |
+| **audit-skill** | Audits a skill's `SKILL.md` and disclosed files against the writing-great-skills framework, producing actionable findings |
+| **distill-for-humans** | Distills a large or technical dump — subagent output, logs, search results, datasets — into the headline a human reader actually needs, before it's relayed |
 | **ship** *(manual: `/ship`)* | Orchestrates a GitHub issue from exploration to a review-approved PR — `ship-explore → ship-design → ship-implement → (ship-review ⇄ ship-implement)`. Sub-skills (`ship-setup`, `ship-explore`, `ship-design`, `ship-implement`, `ship-review`, `ship-discuss`) are its pipeline stages, invoked by `ship` itself, not standalone |
 
 ## How skills work
@@ -33,59 +31,15 @@ skill-name/
 
 ## Natural skill chain
 
-These skills are designed to chain:
+`audit-skill` and `distill-for-humans` are standalone — each triggers on its own, with nothing upstream or downstream.
 
-```
-clarify-me → plan-it → to-prd
-                          ↓
-                    GitHub issues
-```
-
-And `evaluate-skill` can be run after any skill to improve it based on the conversation.
-
-`ship` is a separate, manually-triggered chain (run `.claude/ship/` setup first via `ship-setup`):
+`ship` is the one skill with a defined chain, and it's manually triggered (run `.claude/ship/` setup first via `ship-setup`):
 
 ```
 ship-explore → ship-design → ship-implement ⇄ ship-review → ready-for-review PR
 ```
 
-## Packaging a skill
-
-To package a skill into a `.skill` file for installation:
-
-```bash
-cd skill-creator && python -m scripts.package_skill <path/to/skill-folder>
-```
-
-Packaged `.skill` files are output to `dist/`.
-
-## Evaluating a skill
-
-Skills include eval sets (`evals/evals.json`) that define what "good" looks like for each skill. The eval loop runs test cases, compares `with_skill` vs. `without_skill` (baseline) outputs, and grades the difference.
-
-**Run the eval loop:**
-```bash
-cd skill-creator && python -m scripts.run_loop \
-  --eval-set <path-to-trigger-eval.json> \
-  --skill-path <path-to-skill> \
-  --model <model-id> \
-  --max-iterations 5 \
-  --verbose
-```
-
-**Aggregate benchmark results:**
-```bash
-cd skill-creator && python -m scripts.aggregate_benchmark <workspace>/iteration-N --skill-name <name>
-```
-
-**Review results side-by-side:**
-```bash
-python skill-creator/eval-viewer/generate_review.py <workspace>/iteration-N \
-  --skill-name "my-skill" \
-  --benchmark <workspace>/iteration-N/benchmark.json
-```
-
-Use `--static <output_path>` in headless environments.
+`ship-discuss` runs on demand alongside the pipeline (e.g. `/ship-discuss`) to settle a specific question on the issue or PR; its conclusions are then honored by `ship-design` and `ship-implement`.
 
 ## License
 
