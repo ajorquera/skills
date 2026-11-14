@@ -8,6 +8,7 @@ A collection of Claude Code skills — self-contained instruction sets that exte
 |---|---|
 | **audit-skill** | Audits a skill's `SKILL.md` and disclosed files against the writing-great-skills framework, producing actionable findings |
 | **distill-for-humans** | Distills a large or technical dump — subagent output, logs, search results, datasets — into the headline a human reader actually needs, before it's relayed |
+| **logo-designer** | Designs and iterates on logos as SVG — handles requests to create, redesign or export a logo, brand icon or wordmark |
 | **ship** *(manual: `/ship`)* | Orchestrates a GitHub issue from exploration to a review-approved PR — `ship-explore → ship-design → ship-implement → (ship-review ⇄ ship-implement)`. Sub-skills (`ship-setup`, `ship-explore`, `ship-design`, `ship-implement`, `ship-review`, `ship-discuss`) are its pipeline stages, invoked by `ship` itself, not standalone |
 
 ## How skills work
@@ -31,7 +32,7 @@ skill-name/
 
 ## Natural skill chain
 
-`audit-skill` and `distill-for-humans` are standalone — each triggers on its own, with nothing upstream or downstream.
+`audit-skill`, `distill-for-humans` and `logo-designer` are standalone — each triggers on its own, with nothing upstream or downstream.
 
 `ship` is the one skill with a defined chain, and it's manually triggered (run `.claude/ship/` setup first via `ship-setup`):
 
