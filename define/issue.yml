@@ -1,0 +1,98 @@
+#
+# ██╗ ███████╗ ███████╗ ██╗   ██╗ ███████╗
+# ██║ ██╔════╝ ██╔════╝ ██║   ██║ ██╔════╝
+# ██║ ███████╗ ███████╗ ██║   ██║ █████╗
+# ██║ ╚════██║ ╚════██║ ██║   ██║ ██╔══╝
+# ██║ ███████║ ███████║ ████████║ ███████╗
+# ╚═╝ ╚══════╝ ╚══════╝ ╚═══════╝ ╚══════╝  TEMPLATE
+#
+# Every issue is written for two readers.
+#
+#   The human settles it in the Define interview and gap check, then says "yes"
+#   to a short summary (title, label, summary, decisions). The full visible
+#   part is short, and the draft file is always available to read.
+#
+#   The agent builds from it alone, with nobody left to ask. It gets the
+#   visible part plus the folded <details> blocks: everything it needs.
+#
+# The rules for filling it (summary first, details can explain but can't
+# decide, one diagram, a short confirm) live in the `to-human` skill.
+#
+# Read by the Define skill (writes issues from it), the structure check and the
+# quality call (grade issues against it). Change them together; they ship under
+# the same version tag.
+#
+
+version: 1
+
+# Exactly one of these labels must be on the issue.
+type_labels:
+  - feature
+  - bug
+  - refactor
+
+# Characters a human sees: the body minus <details> blocks and ```mermaid diagrams. Leave out to skip.
+max_body_chars: 4000
+
+# Checklist items under Acceptance criteria. More usually means two issues.
+max_acceptance_criteria: 8
+
+# Rendered in this order as `## <heading>`.
+#   summary: what the visible part holds
+#   detail:  what the folded part holds. Without it, the section can't fold.
+sections:
+  - heading: Problem
+    required: true
+    summary: Why this matters, and what goes wrong or is missing today.
+
+  - heading: Solution
+    required: true
+    summary: >-
+      The shape of the agreed design in a few bullets: what changes, and where.
+    detail: >-
+      The full design, specific enough to implement without reading the Define
+      conversation: behaviour, interfaces, edge cases, and which files and
+      patterns to follow. Prototype branches are evidence, not a substitute.
+
+  - heading: Decisions
+    required: true
+    summary: Every decision made in Define, one line each, saying what we chose.
+    detail: >-
+      For each decision, one line per rejected option, written exactly as
+      `Rejected: <option> because <reason>.` This is the permanent
+      record of the conversation.
+
+  - heading: Acceptance criteria
+    required: true
+    summary: >-
+      Concrete, testable conditions for done, as a checklist. Each one must be
+      checkable by a test or a command. For a bug, include the reproduction.
+
+  - heading: Out of scope
+    required: true
+    summary: What we explicitly decided not to do. Write "None" only if that was agreed.
+
+  - heading: Links
+    required: true
+    summary: Trace ID, Define session ID, and any prototype branches.
+    # Filled in by the render script, not asked about in the interview.
+    generated: true
+
+# Machine-readable fields inside the Links section. The trigger and the
+# structure check find them with these patterns.
+fields:
+  trace_id:
+    line: "Trace ID: `{value}`"
+    pattern: "^Trace ID: `([0-9a-f]{32})`$"
+  session_id:
+    line: "Define session: `{value}`"
+    pattern: "^Define session: `([0-9a-f-]{36})`$"
+  previous_trace_id:
+    line: "Previous trace ID: `{value}`"
+    pattern: "^Previous trace ID: `([0-9a-f]{32})`$"
+    optional: true
+  prototype:
+    line: "Prototype: `{value}`"
+    pattern: "^Prototype: `(proto/[a-z0-9-]+)`$"
+    optional: true
+    repeated: true

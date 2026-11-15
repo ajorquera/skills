@@ -2,3 +2,4 @@
 
 *-workspace/
 dist/
+node_modules/

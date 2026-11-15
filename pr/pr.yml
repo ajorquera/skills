@@ -1,0 +1,63 @@
+#
+# Every PR is written for two readers.
+#
+#   The reviewer reads the visible part: a short summary, what changed, what was
+#   decided, how to check it. It should be enough to approve or push back.
+#
+#   The curious reviewer (or the next person to run `git blame`) opens the
+#   folded <details> blocks for the full story.
+#
+# The rules for filling it (summary first, details can explain but can't
+# decide, one diagram, a short confirm) live in the `to-human` skill.
+#
+# Read by the pr skill (writes PRs from it). Change them together.
+#
+
+version: 1
+
+# Characters a human sees: the body minus <details> blocks and ```mermaid diagrams.
+max_body_chars: 3000
+
+# Rendered in this order as `## <heading>`.
+#   summary: what the visible part holds
+#   detail:  what the folded part holds. Without it, the section can't fold.
+sections:
+  - heading: Why
+    required: true
+    summary: >-
+      The problem or goal, and the issue it closes (`Closes #<n>`) if there is
+      one. A reviewer should know why this exists before reading any code.
+
+  - heading: What changed
+    required: true
+    summary: >-
+      The shape of the change in a few bullets: what changed, and where. Name
+      behaviour, not every file.
+    detail: >-
+      File-by-file notes, edge cases, anything surprising in the diff, and
+      where to start reading.
+
+  - heading: Decisions
+    required: true
+    summary: >-
+      Every choice a reviewer could reasonably disagree with, one line each,
+      saying what we chose. Write "None" if the change was mechanical.
+    detail: >-
+      For each decision, one line per rejected option, written exactly as
+      `Rejected: <option> because <reason>.`
+
+  - heading: How to verify
+    required: true
+    summary: >-
+      Commands to run or steps to follow, and what the reviewer should see.
+      Say what was run and what passed. Say what was not tested.
+
+  - heading: Out of scope
+    required: true
+    summary: What this PR deliberately leaves out. Write "None" only if that is true.
+
+  - heading: Links
+    required: false
+    summary: >-
+      The issue, the trace ID and anything else a reviewer can follow back.
+      Leave the section out if there is nothing to link.
